@@ -35,11 +35,22 @@
 #define __OPEN_GL_H__
 
 #if defined(__APPLE__)
-#  ifdef GL_ES_VERSION_2_0
+#  include <TargetConditionals.h>
+#  if TARGET_OS_IPHONE
 #    include <OpenGLES/ES2/gl.h>
+#    include <OpenGLES/ES2/glext.h>
+#    ifndef GL_RED
+#       define GL_RED GL_RED_EXT
+#    endif
 #  else
 #    include <OpenGL/gl.h>
 #  endif
+#elif defined(ANDROID)
+# include <GLES/gl.h>
+# define GL_GLEXT_PROTOTYPES
+# include <GLES/glext.h>
+# include <GLES2/gl2.h>
+# include <GLES2/gl2ext.h>
 #elif defined(_WIN32) || defined(_WIN64)
 #  include <GL/glew.h>
 #  include <GL/wglew.h>

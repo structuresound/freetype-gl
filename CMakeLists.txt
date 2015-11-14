@@ -30,12 +30,18 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Nicolas P. Rougier.
 # =========================================================================
+
+if (BIICODE)
+include(biicode.cmake)
+return()
+endif (BIICODE)
+
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.5 )
 SET( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules"
                        "${CMAKE_MODULE_PATH}" )
 
-OPTION(freetype-gl_BUILD_DEMOS "Build the freetype-gl example programs" ON)
-OPTION(freetype-gl_LIBS_SUPPLIED "Required libraries are supplied as part of parent build" OFF)
+OPTION(freetype-gl_BUILD_DEMOS "Build the freetype-gl example programs" OFF)
+OPTION(freetype-gl_LIBS_SUPPLIED "Required libraries are supplied as part of parent build" ON)
 
 # Get required and optional library
 FIND_PACKAGE( OpenGL REQUIRED )
@@ -111,10 +117,10 @@ SET( FREETYPE_GL_SRC freetype-gl.h
                      text-buffer.c      text-buffer.h
                      shader.c           shader.h
                      vector.c           vector.h
-                     platform.c         platform.h)
+                     platform.c         platform.h
+                     edtaa3func.h       edtaa3func.c)
 
 ADD_LIBRARY( freetype-gl STATIC ${FREETYPE_GL_SRC} )
-
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR})
 
 MACRO( DEMO _target _sources)
@@ -123,7 +129,7 @@ MACRO( DEMO _target _sources)
     if(NOT APPLE)
      target_link_libraries(${_target} ${GLEW_LIBRARY})
     endif()
-     target_link_libraries(${_target} freetype-gl)
+     target_link_libraries(${_target} ${freetype-gl})
      target_link_libraries(${_target} ${OPENGL_LIBRARY})
      target_link_libraries(${_target} ${GLUT_LIBRARY})
      target_link_libraries(${_target} ${FREETYPE_LIBRARY})
@@ -190,19 +196,19 @@ IF (ANT_TWEAK_BAR_FOUND AND (NOT (WIN32 OR WIN64)) )
   FILE(REMOVE ${CMAKE_SOURCE_DIR}/stdc_test.c)
 ENDIF (ANT_TWEAK_BAR_FOUND AND (NOT (WIN32 OR WIN64)) )  
 
+if (APPLE)
+set(ASSET_DIR ${CMAKE_CURRENT_BINARY_DIR}/Contents/Resources)
+else (APPLE)
+set(ASSET_DIR ${CMAKE_CURRENT_BINARY_DIR})
+endif(APPLE)
+
 # Copy font and shaders into build directory for in-place testing
-FILE(GLOB Fonts   "fonts/Vera.ttf"
-                  "fonts/VeraMoBI.ttf"
-                  "fonts/VeraMoBd.ttf"
-                  "fonts/VeraMoIt.ttf"
-                  "fonts/VeraMono.ttf"
-                  "fonts/ObelixPro.ttf")
-file(COPY ${Fonts}   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/fonts)
-
+FILE(GLOB Fonts "fonts/*.ttf")
 FILE(GLOB Data   "data/256colors.txt")
-file(COPY ${Data}   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
-
 FILE(GLOB Shaders "shaders/*.vert" "shaders/*.frag")
-file(COPY ${Shaders} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+
+file(COPY ${Fonts}   DESTINATION ${ASSET_DIR})
+file(COPY ${Data}   DESTINATION ${ASSET_DIR})
+file(COPY ${Shaders} DESTINATION ${ASSET_DIR})
 
 ENDIF (freetype-gl_BUILD_DEMOS)

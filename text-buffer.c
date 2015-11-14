@@ -57,8 +57,8 @@ text_buffer_new( size_t depth )
     self->buffer = vertex_buffer_new(
         "vertex:3f,tex_coord:2f,color:4f,ashift:1f,agamma:1f" );
     self->manager = font_manager_new( 512, 512, depth );
-    self->shader = shader_load("shaders/text.vert",
-                               "shaders/text.frag");
+    self->shader = shader_load("Contents/Resources/text.vert",
+                               "Contents/Resources/text.frag");
     self->shader_texture = glGetUniformLocation(self->shader, "texture");
     self->shader_pixel = glGetUniformLocation(self->shader, "pixel");
     self->line_start = 0;

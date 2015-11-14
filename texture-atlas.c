@@ -333,8 +333,8 @@ texture_atlas_upload( texture_atlas_t * self )
     }
     else if( self->depth == 3 )
     {
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, self->width, self->height,
-                      0, GL_RGB, GL_UNSIGNED_BYTE, self->data );
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, self->width, self->height,
+                      0, GL_RED, GL_UNSIGNED_BYTE, self->data );
     }
     else
     {

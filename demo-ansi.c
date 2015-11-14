@@ -42,6 +42,8 @@
 #include "shader.h"
 #include "mat4.h"
 
+#include "glui/glutwrapper/glut.h"
+
 #if defined(__APPLE__)
     #include <Glut/glut.h>
 #elif defined(_WIN32) || defined(_WIN64)
@@ -327,7 +329,7 @@ int main( int argc, char **argv )
     vec4 none  = {{1.0, 1.0, 1.0, 0.0}};
 
     markup_t markup;
-    markup.family  = "fonts/VeraMono.ttf",
+    markup.family  = "Contents/Resources/VeraMono.ttf",
     markup.size    = 15.0;
     markup.bold    = 0;
     markup.italic  = 0;
@@ -345,7 +347,7 @@ int main( int argc, char **argv )
     markup.font = 0;
 
     vec2 pen = {{10.0, 480.0}};
-    FILE *file = fopen ( "data/256colors.txt", "r" );
+    FILE *file = fopen ( "Contents/Resources/256colors.txt", "r" );
     if ( file != NULL )
     {
         wchar_t line[1024];

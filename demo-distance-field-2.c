@@ -43,6 +43,8 @@
 #include "shader.h"
 #include "mat4.h"
 
+#include "glui/glutwrapper/glut.h"
+
 #if defined(__APPLE__)
     #include <Glut/glut.h>
 #elif defined(_WIN32) || defined(_WIN64)
@@ -284,7 +286,7 @@ main( int argc, char **argv )
 #endif
     texture_font_t *font = 0;
     texture_atlas_t *atlas = texture_atlas_new( 512, 512, 1 );
-    const char * filename = "fonts/Vera.ttf";
+    const char * filename = "Contents/Resources/Vera.ttf";
     wchar_t *text = L"A Quick Brown Fox Jumps Over The Lazy Dog 0123456789";
     buffer = vertex_buffer_new( "vertex:3f,tex_coord:2f,color:4f" );
     vec2 pen = {{0,0}};
@@ -300,7 +302,6 @@ main( int argc, char **argv )
         vertex->y -= (int)(bbox.y + bbox.height/2);
     }
 
-
     glBindTexture( GL_TEXTURE_2D, atlas->id );
 
     fprintf( stderr, "Generating distance map...\n" );
@@ -311,8 +312,8 @@ main( int argc, char **argv )
     free(map);
     texture_atlas_upload( atlas );
 
-    shader = shader_load( "shaders/distance-field-2.vert",
-                          "shaders/distance-field-2.frag" );
+    shader = shader_load( "Contents/Resources/distance-field-2.vert",
+                          "Contents/Resources/distance-field-2.frag" );
     mat4_set_identity( &projection );
     mat4_set_identity( &model );
     mat4_set_identity( &view );
